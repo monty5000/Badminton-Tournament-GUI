@@ -890,7 +890,7 @@ def table_order_analyser(log, tableDict, teams):
         wins x 1000000
         net games x 10000
         net points x 10
-        tie-breker x 1 (add 2 to pair1, 2 to pair2, 1 to pair3 so there is never a draw)
+        tie-breaker x 1 (add 5 to pair1, 4 to pair2, 3 to pair3 etc so there is never a draw)
 
 
     Example dict input:
@@ -975,8 +975,9 @@ def table_order_analyser(log, tableDict, teams):
 
     return updated_tableDict
 
+
 def update_group_table(log, parent_window, group, updated_tableDict, number_teams):
-    """ Updates the group table sg.Table in Tournament Summary tab
+    """ Updates the group table sg.Table in the relevant group tab in the Live Tournament window
 
     Notes:
 
