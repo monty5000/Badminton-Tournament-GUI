@@ -99,7 +99,8 @@ class GuiWindow(object):
             [sg.T("(Max. points per game: " + str(max_score) + ")", font="Any 12")],
             [sg.HSep()],
             [sg.T("")],
-            [sg.T("Order of Play", font="Any 14", text_color="Black")],
+            [sg.T("Order of Play", font="Any 14", text_color="Black"),
+             sg.B("Alternative View", key="ADVANCED_OOP", tooltip="Alternative view for order of play", )],
             [sg.T("")],
             [sg.Multiline("", text_color="White", size=(60, 200), key="ORDER_OF_PLAY")]
         ]
@@ -317,6 +318,13 @@ class GuiWindow(object):
 
             if event == "LIVE_POPUP_SAVE":
                 popup_save(self.log, data)
+
+            if event == "ADVANCED_OOP":
+                adv_order_of_play_list = []
+                adv_order_of_play_list = create_order_of_play(self.log, data, active_groups)
+                self.log.info("::[%s]::'popup_launch_tournament' alternative oop list created:\n%s" %
+                              (logExtra, str(adv_order_of_play_list)))
+                popup_advanced_oop(self.log, adv_order_of_play_list, data)
 
             if event == "REFRESH_PLAYER_SUMMARY":
                 # note 'active_groups' is a list of int for active groups

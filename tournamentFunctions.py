@@ -2,6 +2,7 @@
 import os
 import PySimpleGUI as sg
 import json
+import re
 from templateTournamentVars import icon_shuttle as shuttleIcon
 from templateTournamentVars import icon_warning as warningIcon
 from matchProcessingClass import PairData
@@ -1429,7 +1430,7 @@ def popup_save(log, data):
     window.close()
 
 
-def popup_enter_score(log, event, workingDict, max_score=21,):
+def popup_enter_score(log, event, workingDict, max_score=21):
     """ window to enter match score
 
     enter_score_result will be of format:
@@ -1656,7 +1657,7 @@ def create_order_of_play(log, workingDict, active_groups):
 
     play_order = []
     d = workingDict
-    play_dict = {}      # used to hold all data about games remaing per group
+    play_dict = {}      # used to hold all data about games remaining per group
 
     # working vars - set to default
     grp_size = 0
@@ -1734,14 +1735,15 @@ def create_order_of_play(log, workingDict, active_groups):
             grp_percent_remaining = 0
             sum_games_remaining = 0     # used to exit loop, if sum all games remaining then exit
             for key, value in play_dict.items():
-                sum_games_remaining = 0
                 if (value['games_remaining']) > 0:
                     sum_games_remaining += value['games_remaining']
                     # grp_percent_remaining and next_grp will be the highest found so far
                     if (value['remaining_metric']/value['weighted_total']) > grp_percent_remaining:
                         grp_percent_remaining = (value['remaining_metric']/value['weighted_total'])
                         next_grp = key
-                        #log.debug("::[%s]::'create_order_of_play' finds new highest remaining: %s" % (logExtra, key))
+                        log.debug("::[%s]::'create_order_of_play' finds new highest remaining: %s" % (logExtra, key))
+                        log.debug("::[%s]::'create_order_of_play' sum_games_remaining is: %s" %
+                                  (logExtra, str(sum_games_remaining)))
 
             # if all groups have 0 games remaining exit loop
             if sum_games_remaining == 0:
@@ -1775,6 +1777,7 @@ def process_next_match(log, group, play_dict):
                         'games_remaining': 6, 'weighted_total': 422, 'remaining_metric': 400}
         }
 
+    :param log: logging object
     :param group: string for group of interest (will match key in input dictionary)
     :param play_dict: dictionary for matches per group (see above)
 
@@ -1802,3 +1805,190 @@ def process_next_match(log, group, play_dict):
 
     return success, next_match, play_dict
 
+def process_alt_oop(log, oop_list, combined, workingDict):
+    """ Processes Order of Play list to reformat it
+    Notes:
+        Example input oop_list:
+        ['GROUP 1 :: Pair 1 v Pair 2', 'GROUP 2 :: Pair 1 v Pair 2', 'GROUP 1 :: Pair 3 v Pair 4',
+        'GROUP 1 :: Pair 1 v Pair 4', 'GROUP 2 :: Pair 3 v Pair 1', 'GROUP 1 :: Pair 2 v Pair 3',
+        'GROUP 1 :: Pair 1 v Pair 3', 'GROUP 2 :: Pair 2 v Pair 3', 'GROUP 1 :: Pair 2 v Pair 4']
+
+    :param log: logging object
+    :param oop_list: list for order of play
+    :param combined: bool to indicate whether oop is to be combined or separate groups
+    :param workingDict: working dictionary for all tournament data
+
+    :return: new_oop: string for new order of play
+    """
+    new_oop = ""
+
+    oop_int_list = []   # order of play as list of ints, each element being [<group>, <pair_i>, <pair_ii>]
+
+    try:
+        for i in oop_list:
+            # e.g. extract [3, 2, 1] from string 'GROUP 3 :: Pair 2 v Pair 1'
+            temp_list = re.findall('\d+', i)
+            log.debug("::[%s]::'process_alt_oop' oop entry is: %s" % (logExtra, str(temp_list)))
+            oop_int_list.append(temp_list)
+
+        if combined:
+            # order of play is to be combination of all groups, use the given order and find names rather than pairs
+            for i in oop_int_list:
+                temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                log.debug("::[%s]::'process_alt_oop' text line is: %s" % (logExtra, temp_line))
+                new_oop += ("\n" + temp_line)
+        else:
+            # order of play is per group and not combined
+            oop_gr1 = ""
+            oop_gr2 = ""
+            oop_gr3 = ""
+            oop_gr4 = ""
+            oop_gr5 = ""
+            oop_gr6 = ""
+            oop_gr7 = ""
+            oop_gr8 = ""
+
+            for i in oop_int_list:
+                if i[0] == '1':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr1 += ("\n" + temp_line)
+                elif i[0] == '2':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr2 += ("\n" + temp_line)
+                elif i[0] == '3':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr3 += ("\n" + temp_line)
+                elif i[0] == '4':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr4 += ("\n" + temp_line)
+                elif i[0] == '5':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr5 += ("\n" + temp_line)
+                elif i[0] == '6':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr6 += ("\n" + temp_line)
+                elif i[0] == '7':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr7 += ("\n" + temp_line)
+                elif i[0] == '8':
+                    temp_line = lookup_pair_names(log, i[0], i[1], i[2], workingDict)
+                    oop_gr8 += ("\n" + temp_line)
+                else:
+                    pass
+
+            if oop_gr1:
+                new_oop += "\n\n*** GROUP 1 ***" + oop_gr1
+            if oop_gr2:
+                new_oop += "\n\n*** GROUP 2 ***" + oop_gr2
+            if oop_gr3:
+                new_oop += "\n\n*** GROUP 3 ***" + oop_gr3
+            if oop_gr4:
+                new_oop += "\n\n*** GROUP 4 ***" + oop_gr4
+            if oop_gr5:
+                new_oop += "\n\n*** GROUP 5 ***" + oop_gr5
+            if oop_gr6:
+                new_oop += "\n\n*** GROUP 6 ***" + oop_gr6
+            if oop_gr7:
+                new_oop += "\n\n*** GROUP 7 ***" + oop_gr7
+            if oop_gr8:
+                new_oop += "\n\n*** GROUP 8 ***" + oop_gr8
+
+        log.debug("::[%s]::'process_alt_oop' oop int list is: %s" % (logExtra, str(oop_int_list)))
+        log.info("::[%s]::'process_alt_oop' new oop string is: %s" % (logExtra, new_oop))
+
+    except Exception as e:
+        log.error("::[%s]::'process_alt_oop' General Exception:%s" % (logExtra, str(e)))
+        new_oop = "Error encountered in 'process_alt_oop'"
+
+    return new_oop
+
+
+def lookup_pair_names(log, group, pair_i, pair_ii, data):
+    """ Looks up pair names in working dictionary
+
+    Notes:
+        Returned string should be in the form
+        'GROUP 3 :: Bob/Bill v John/Pete'
+
+    :param log: logging object
+    :param group: int for group
+    :param pair_i: int for pair i
+    :param pair_ii: int for pair ii
+    :param data: working dictionary for all tournament data
+
+    :return: oop_line: string for line of text to add to order of play
+
+    """
+    oop_line = ""
+    # dict to allow lookup of partial key names
+    lookup_keys = {
+        '1': ["_PLAYERA1-DISPLAY", "_PLAYERA2-DISPLAY"],
+        '2': ["_PLAYERB1-DISPLAY", "_PLAYERB2-DISPLAY"],
+        '3': ["_PLAYERC1-DISPLAY", "_PLAYERC2-DISPLAY"],
+        '4': ["_PLAYERD1-DISPLAY", "_PLAYERD2-DISPLAY"],
+        '5': ["_PLAYERE1-DISPLAY", "_PLAYERE2-DISPLAY"]
+    }
+
+    try:
+        log.debug("::[%s]::'lookup_pair_names' inputs: %s, %s, %s" % (logExtra, str(group), str(pair_i), str(pair_ii)))
+        group_text = "GROUP " + str(group) + " :: "      # start of the returned line
+        grpx_key = "GRP" + str(group)
+        pair_i_key_i = "GRP" + str(group) + (lookup_keys[pair_i][0])
+        pair_i_key_ii = "GRP" + str(group) + (lookup_keys[pair_i][1])
+        pair_ii_key_i = "GRP" + str(group) + (lookup_keys[pair_ii][0])
+        pair_ii_key_ii = "GRP" + str(group) + (lookup_keys[pair_ii][1])
+
+        log.debug("::[%s]::'lookup_pair_names' pair keys: %s, %s vs %s, %s" % (logExtra, pair_i_key_i, pair_i_key_ii,
+                                                                            pair_ii_key_i, pair_ii_key_ii))
+
+        oop_line = group_text + data[grpx_key]["config"][pair_i_key_i] + " / " +\
+                   data[grpx_key]["config"][pair_i_key_ii] +\
+                   "  -vs-  " +\
+                   data[grpx_key]["config"][pair_ii_key_i] +\
+                   " / " + data[grpx_key]["config"][pair_ii_key_ii] + "\n"
+
+    except Exception as e:
+        log.error("::[%s]::'lookup_pair_names' General Exception:%s" % (logExtra, str(e)))
+        oop_line = "Error found in 'lookup_pair_names'"
+
+    return oop_line
+
+def popup_advanced_oop(log, oop_list, workingDict):
+    """ Popup window for displaying advanced order of play
+
+    :param: log: logging object
+    :param  oop_list: list for order of play (original format; combined with no names)
+    :param: max_score: int, kwarg for max points per game
+    """
+
+    layoutPopupAdvOOP = [
+        [sg.T("")],
+        [sg.T("Reformat Order of Play for easier viewing.", font="Any 11 bold")],
+        [sg.T("Uses players names rather than pair numbers.", font="Any 11 bold")],
+        [sg.HSep()],
+        [sg.T("")],
+        [sg.T("Order of Play Format", font="Any 10 bold"), sg.Combo(['combined', 'per group'], default_value='combined',
+                                                                    key='OOP_OPTION')],
+        [sg.T("")],
+        [sg.B('Submit Choice', key="SUBMIT_CHOICE", font="Any 11 bold"), sg.B('Close', key="CLOSE", font="Any 11 bold")],
+        [sg.Multiline("", text_color="White", size=(80, 40), key="OOP_DISPLAY")]
+    ]
+
+    oop_window = sg.Window("Alternative Order of Play", layoutPopupAdvOOP, use_default_focus=False, finalize=True,
+                       modal=True, icon=shuttleIcon, resizable=True, size=(600, 400))
+
+    while True:
+        event, values = oop_window.read()
+        if event == sg.WIN_CLOSED:
+            break
+        if event == "CLOSE":
+            break
+        if event == "SUBMIT_CHOICE":
+            if values['OOP_OPTION'] == "combined":
+                combined_setting = True
+            else:
+                combined_setting = False
+            new_oop = process_alt_oop(log, oop_list, combined_setting, workingDict)
+            oop_window["OOP_DISPLAY"].update(new_oop)
+
+    oop_window.close()

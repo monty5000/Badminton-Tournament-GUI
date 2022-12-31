@@ -7,7 +7,7 @@
 #
 # Version:
 #
-#   version:: TG_0.1, NOTE also update variable 'version' below
+#   version:: TG_0.2, NOTE also update variable 'version' below
 #
 # Purpose:
 #
@@ -55,7 +55,7 @@ from templateTournamentVars import templateJSON as templateJSON
 # vars
 log = DevLogger(print_logging=False, log_level=2)
 logExtra = os.path.basename(__file__)
-version = "TG_0.1"     # TournamentGUI2 version 0.1
+version = "TG_0.2"     # TournamentGUI2 version 0.2
 
 try:
 
