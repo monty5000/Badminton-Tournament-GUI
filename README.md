@@ -1,5 +1,4 @@
 # Badminton-Tournament-GUI
-### latest version TG_0.3
 
 Allows management of player groups in a badminton tournament.
 
@@ -9,7 +8,7 @@ Allows management of player groups in a badminton tournament.
 - Save/Import previous tournament data
 - Create order of play
 - Create summary of players in each group
-
+### [ latest version TG_0.3 ]
 
 ## Note
 Uses PySimpleGUI for the main GUI elements.
