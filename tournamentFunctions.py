@@ -1970,7 +1970,8 @@ def popup_advanced_oop(log, oop_list, workingDict):
         [sg.T("Order of Play Format", font="Any 10 bold"), sg.Combo(['combined', 'per group'], default_value='combined',
                                                                     key='OOP_OPTION')],
         [sg.T("")],
-        [sg.B('Submit Choice', key="SUBMIT_CHOICE", font="Any 11 bold"), sg.B('Close', key="CLOSE", font="Any 11 bold")],
+        [sg.B('Submit Choice', key="SUBMIT_CHOICE", font="Any 11 bold"), sg.B('Close', key="CLOSE",
+                                                                              font="Any 11 bold")],
         [sg.Multiline("", text_color="White", size=(80, 40), key="OOP_DISPLAY")]
     ]
 

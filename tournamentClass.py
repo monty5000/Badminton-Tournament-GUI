@@ -47,7 +47,11 @@ class GuiWindow(object):
                                                                   font=("Any 14"))],
             [sg.HSep()],
             [sg.T("Martin Burns, ", font='Verdana 10'),
-             sg.T("mburns5000@outlook.com", font='Verdana 10', text_color=("Blue"))]
+             sg.T("mburns5000@outlook.com", font='Verdana 10', text_color=("Blue"))],
+            [sg.T("Check for latest version: ", font='Verdana 10'),
+             sg.T("Link to Project URL on GitHub", enable_events=True,
+                  tooltip="Click to open project URL in webbrowser", font='Verdana 10 underline', text_color=("Blue"),
+                  key="PROJECT_URL")]
         ]
 
         # 2nd column
@@ -69,13 +73,12 @@ class GuiWindow(object):
         # ----- Full layout -----
         layout = [
             [
-                sg.Column(column1, size=(570, 290)),
+                sg.Column(column1, size=(570, 330)),
                 sg.VSeperator(),
-                sg.Column(column2, size=(420, 290))
+                sg.Column(column2, size=(420, 330))
             ]
         ]
 
-        #sg.theme("Kayak")
         sg.theme("DarkTeal8")
 
         sg.user_settings_filename(path='.')  # Set the location for the settings file

@@ -7,7 +7,7 @@
 #
 # Version:
 #
-#   version:: TG_0.2, NOTE also update variable 'version' below
+#   version:: TG_0.3, NOTE also update variable 'version' below
 #
 # Purpose:
 #
@@ -46,6 +46,7 @@ import os
 import PySimpleGUI as sg
 from pathlib import Path
 import json
+import webbrowser
 
 from devLogger import DevLogger
 from tournamentClass import GuiWindow
@@ -55,7 +56,7 @@ from templateTournamentVars import templateJSON as templateJSON
 # vars
 log = DevLogger(print_logging=False, log_level=2)
 logExtra = os.path.basename(__file__)
-version = "TG_0.2"     # TournamentGUI2 version 0.2
+version = "TG_0.3"     # TournamentGUI2 version 0.2
 
 try:
 
@@ -124,6 +125,9 @@ try:
 
         if event == "HELP":
             popup_help()
+
+        if event == "PROJECT_URL":
+            webbrowser.open("https://github.com/monty5000/Badminton-Tournament-GUI")
 
     guiWindow.window.close()
 
