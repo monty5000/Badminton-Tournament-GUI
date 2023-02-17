@@ -1,5 +1,5 @@
 # Badminton-Tournament-GUI
-## [latest version TG_0.3]
+#latest version TG_0.3
 
 Allows management of player groups in a badminton tournament.
 
