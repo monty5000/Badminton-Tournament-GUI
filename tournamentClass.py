@@ -34,7 +34,7 @@ class GuiWindow(object):
         ################
         # 1st column
         column1 = [
-            [sg.Text("Choose 'New' or load from previous save", font=("Any 14"))],
+            [sg.Text("To start choose 'New' or load from previous save", font=("Any 14"))],
             [sg.HSep()],
             [sg.Button('New', font=('Any 14'), tooltip="Create new tournament")],
             [sg.HSep()],
@@ -46,9 +46,10 @@ class GuiWindow(object):
             [sg.B("Exit", key="EXIT_HOME", font=("Any 14")), sg.B("Help", button_color="green on white", key="HELP",
                                                                   font=("Any 14"))],
             [sg.HSep()],
-            [sg.T("Martin Burns, ", font='Verdana 10'),
-             sg.T("mburns5000@outlook.com", font='Verdana 10', text_color=("Blue"))],
-            [sg.T("Check for latest version: ", font='Verdana 10'),
+            [sg.T("")],
+            [sg.T("Martin Burns, ", font='Verdana 9'),
+             sg.T("mburns5000@outlook.com", font='Verdana 9', text_color=("Blue"))],
+            [sg.T("Check for latest version: ", font='Verdana 9'),
              sg.T("Link to Project URL on GitHub", enable_events=True,
                   tooltip="Click to open project URL in webbrowser", font='Verdana 10 underline', text_color=("Blue"),
                   key="PROJECT_URL")]
