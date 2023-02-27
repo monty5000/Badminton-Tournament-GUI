@@ -57,7 +57,7 @@ class GuiWindow(object):
 
         # 2nd column
         column2 = [
-            [sg.T("You may only launch tournament after selecting 'New' or loading a previous save", size=(40, 2),
+            [sg.T("'Launch Tournament' only available after selecting 'New' or loading a previous save", size=(40, 2),
                   font=('Any 14'), text_color="yellow")],
             [sg.T("")],
             #[sg.B("Launch Tournament", button_color="black on red", font=("Any 14"), disabled=True,
@@ -76,7 +76,7 @@ class GuiWindow(object):
             [
                 sg.Column(column1, size=(570, 330)),
                 sg.VSeperator(),
-                sg.Column(column2, size=(420, 330))
+                sg.Column(column2, size=(440, 330))
             ]
         ]
 
