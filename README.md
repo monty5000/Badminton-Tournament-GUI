@@ -18,6 +18,9 @@ Windows .exe created using PyInstaller.
 
 The only file required from a Windows environment is tournamentMain.exe
 
+youtube demo found here: 
+<https://youtu.be/pdT2uz6AD5I>
+
 The Python files the .exe is based on are included but likely not required for most users.
 
 As an alternative, if running from a Python environment run the file tournamentMain.py
